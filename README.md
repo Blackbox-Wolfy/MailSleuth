@@ -1,4 +1,4 @@
-# MailTrace
+# MailSleuth
 
 A lightweight, ethical email OSINT tool written in Python. MailTrace gathers **public data only** about an email address and its domain.
 
@@ -14,8 +14,8 @@ A lightweight, ethical email OSINT tool written in Python. MailTrace gathers **p
 ## Installation
 
 ```bash
-git clone https://github.com/<your-username>/mailtrace.git
-cd mailtrace
+git clone https://github.com/Blackbox-Wolfy/MailSleuth.git
+cd MailSleuth
 python -m venv venv
 source venv/bin/activate        # Windows: venv\Scripts\activate
 pip install -r requirements.txt
@@ -39,7 +39,7 @@ python email_osint.py someone@example.com
 
 ## Ethical Use
 
-Use MailTrace **only** on email addresses you own or have explicit permission to investigate. Do not use it for harassment, stalking, or any unlawful activity. You are responsible for complying with local laws and the terms of any service queried.
+Use MailSleuth **only** on email addresses you own or have explicit permission to investigate. Do not use it for harassment, stalking, or any unlawful activity. You are responsible for complying with local laws and the terms of any service queried.
 
 ## License
 
