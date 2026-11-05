@@ -50,10 +50,16 @@ def dns_lookup(domain: str, rtype: str, prefix: str = "") -> list:
     if dns is None:
         return ["dnspython not installed"]
     try:
-        answers = dns.resolver.resolve(prefix + domain, rtype, lifetime=TIMEOUT)
+        # Termux/Android has no /etc/resolv.conf, so set public DNS manually.
+        resolver = dns.resolver.Resolver(configure=False)
+        resolver.nameservers = ["8.8.8.8", "1.1.1.1"]
+        resolver.lifetime = TIMEOUT
+        answers = resolver.resolve(prefix + domain, rtype)
         return [r.to_text() for r in answers]
-    except Exception:
+    except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
         return []
+    except Exception as e:
+        return [f"DNS error: {e}"]
 
 
 def check_dns(domain: str) -> dict:
@@ -62,7 +68,7 @@ def check_dns(domain: str) -> dict:
     dmarc = dns_lookup(domain, "TXT", "_dmarc.")
     return {
         "mx_records": mx,
-        "has_mx": bool(mx) and mx != ["dnspython not installed"],
+        "has_mx": bool(mx) and not mx[0].startswith(("dnspython", "DNS error")),
         "spf": [t for t in txt if "v=spf1" in t],
         "dmarc": [t for t in dmarc if "v=DMARC1" in t],
     }
@@ -161,3 +167,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     sys.exit(main())
+  
